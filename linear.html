@@ -1,0 +1,90 @@
+<html>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>   
+
+</head> 
+<body>
+   
+    
+    
+    
+    <form class="md-form">
+  <div class="file-field">
+    <div>
+      <span class=" btn btn-primary ">Choose file</span>
+      <input type="file"  class=" btn btn-primary " onchange="loadFile(event)">
+    </div>
+
+  </div>
+</form>
+    
+    <img id="img" width="600" height="600" />	
+    
+    <button type="button"  class=" btn btn-primary " id="startPredicting" onclick="startPredicting()">  startPredicting</button>
+     <div id="predict">
+    
+    </div>
+    
+    
+    
+    </body>   
+
+
+
+
+<script>
+var loadFile = function(event) {
+	var image = document.getElementById('img');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+</script>
+
+
+    <script>
+     
+
+
+    async function run(){
+        
+        const MODEL_URL = 'http://127.0.0.1:8887/model.json';
+        const model = await tf.loadLayersModel(MODEL_URL);
+//        console.log(model.summary());
+        const img = document.getElementById('img');
+
+        const tfImg = tf.browser.fromPixels(img);
+        const smalImg = tf.image.resizeBilinear(tfImg, [300, 300]);
+        const resized = tf.cast(smalImg, 'float32');
+        const t4d = tf.tensor4d(Array.from(resized.dataSync()),[1,300,300,3])
+        
+        const result = model.predict(t4d);
+        
+    var predictionText = "";
+    const classId = (await result.as1D().argMax().data())[0];
+    switch(classId){
+		case 0:
+			predictionText = "I see Coivd";
+			break;
+		case 1:
+			predictionText = "I see Normal";
+			break;
+		case 2:
+			predictionText = "I see Penomiua";
+			break;
+	}
+        
+        
+        
+      document.getElementById("predict").innerText = predictionText
+        alert(result)
+	}
+        
+ function startPredicting(){
+     	run();
+
+     
+     
+ }       
+
+</script>
+</html>

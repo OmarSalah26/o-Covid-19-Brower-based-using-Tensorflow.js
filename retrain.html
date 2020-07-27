@@ -1,0 +1,24 @@
+<html>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+<script src="webcam.js"></script>
+<script src="rps-dataset.js"></script>
+</head>
+<body>
+	<div>
+		<div>
+			<video style="margin-left : 400px; margin-top: 50px "   autoplay playsinline muted id="wc" width="600" height="600"></video>
+		</div>
+	</div>
+
+
+	<div id="dummy" style="margin-left : 400px;" > click 'Start Predicting' to see predictions, 
+	<button type="button"  class=" btn btn-primary " id="startPredicting" onclick="startPredicting()" >Start Predicting</button>
+	<h1 id="prediction"></h1>
+        </div>
+</body>
+
+<script src="index.js"></script>
+</html>
